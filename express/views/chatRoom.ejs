@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>chatRoom</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var socket=io.connect();
+        socket.emit('show',{id:'<%=id%>'});
+        socket.on('messages',function(data){
+          // alert(data);
+          for(let i=0;i<data.messages.length;i++){
+            $('#chat').append('<p>'+data.messages[i]+'</p>');
+          }
+        });
+        socket.on('new',function(data){
+          $('#chat').append('<p style="color:red">'+data.name+' enter the chatroom</p>');
+        });
+        $('#send').click(function(){
+          socket.emit('send_message',{id:'<%=id%>',msg:$('#message').val()});
+        });
+        socket.on('add_message',function(data){
+          $('#chat').append('<p>'+data.msg+'</p>');
+        });
+        $('#disconnect').click(function(){
+          socket.emit('discon',{id:'<%=id%>'});
+          $('#main').empty();
+          $('#main').load('/');
+          //need to close the socket !!!
+          socket.disconnect();
+        });
+        socket.on('user_disconnect',function(data){
+          $('#chat').append('<p style="color:red">'+data.user+' leave the chat room</p>');
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Coversation board</h1>
+    <div id="chat"></div>
+    <input type="text" id="message">
+    <button type="button" id="send">send</button>
+    <button type="button" id="disconnect">disconnect</button>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var socket=io.connect();
+        $('#login').click(function(){
+          socket.emit('join',{name:$('#name').val()})
+        })
+        socket.on('enter',function(data){
+          $('#main').load('/chatRoom',{id:data.id});
+        })
+      });
+    </script>
+  </head>
+  <body>
+    <div id="main">
+      <h1> Ur NAME:<input type="text" id="name"> </h1>
+      <h1> <button type="button" id="login">submit</button> </h1>
+    </div>
+  </body>
+</html>

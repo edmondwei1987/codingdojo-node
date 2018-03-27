@@ -1,0 +1,9 @@
+fieldset{
+  width:300px;
+}
+label{
+  width:200px;
+}
+input,select,textarea{
+  display: block;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Form</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var socket=io.connect();
+        $('#submit').click(function(){
+          socket.emit('posting_form',{name:$('#name').val(),location:$('#location').val(),language:$('#language').val(),comment:$('#comment').val()});
+        });
+        socket.on('update_message',function(data){
+          $('#lucky').html('UR LUCKY NUMBER IS '+data.random+' Hey '+data.msg);
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <fieldset>
+      <legend>Suvey Form</legend>
+        <h1 id='lucky'></h1>
+        <label>Your Name:</label>
+        <input type="text" name="name" id="name">
+        <label>Dojo Location:</label>
+        <select name="location" id="location">
+          <option value="san jose">san jose</option>
+          <option value="newyork">newyork</option>
+          <option value="burbank">burbank</option>
+        </select>
+        <label>Favorite Language:</label>
+        <select name="language" id="language">
+          <option value="python">python</option>
+          <option value="java">java</option>
+          <option value="jacascript">javascript</option>
+        </select>
+        <label>Comment(optional):</label>
+        <textarea name="comment" rows="8" cols="80" id="comment"></textarea>
+        <input type="submit" name="submit" id='submit'>
+    </fieldset>
+  </body>
+</html>

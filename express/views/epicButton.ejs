@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Epic Button</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var socket=io.connect();
+        $('#button').click(function(){
+          socket.emit('click_button');
+        })
+        socket.on('update_message',function(data){
+          $('#message').html('The button has been pushed '+data.count+' times');
+        });
+        $('#reset').click(function(){
+          socket.emit('reset');
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1 id="message"></h1>
+    <button type="button" id="button">Epic Button</button>
+    <button type="button" id="reset">Reset</button>
+  </body>
+</html>
